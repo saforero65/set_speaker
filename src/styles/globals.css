@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+
+}
+
+.visualizaction {
+    width: 98%;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+
+
+}
+
+.segmentos {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid black;
+    padding: 10px;
+    margin: 10px;
+    width: fit-content;
+    border-radius: 10px;
+    background-color: antiquewhite;
+    max-width: 100%;
+}
+
+h1 {
+    display: block;
+    width: 100%;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.segmentos_details {
+    margin: 2rem;
+    margin-right: 4rem;
+
+}
+
+.segmentosSRT {
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    justify-content: space-between;
+    border: 1px solid black;
+    padding: 10px;
+    margin: 10px;
+    min-width: 215px;
+    width: 100%;
+    max-width: min-content;
+    border-radius: 10px;
+    background-color: black;
+    color: white;
+}
+
+.speaker {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.containerSegments {
+    display: flex;
+    width: max-content;
+    flex-wrap: wrap;
+
+
+}
