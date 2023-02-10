@@ -19,8 +19,12 @@ const Upload = ({ onFileUpload }) => {
       const formData = new FormData();
       formData.append("myFile", selectedFile);
 
+      console.log(" empieza el post upload");
       const { data } = await axios.post("/api/upload", formData);
+      console.log("termina el post upload");
+      console.log(data);
 
+      console.log(" empieza el post srtToJson");
       const jsonSrt = await axios.post("/api/srtToJson", {
         filename: data.filename,
       });
