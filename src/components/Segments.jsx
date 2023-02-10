@@ -43,7 +43,7 @@ const Segments = () => {
 
   return (
     <div className="visualizaction">
-      <h1> Visualizacion Segmentos con fragmentos del SRT MUTE FIRE </h1>
+      <h1> Visualizacion Segmentos con Fragmentos </h1>
       <h3 className="speaker details">
         Total de Segementos: {segments?.segmentos?.length}
       </h3>
