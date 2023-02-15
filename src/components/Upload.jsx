@@ -1,8 +1,10 @@
 import { DataContext } from "@/context/DataContext";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
+import rrttmJsonMuteFireTrsc from "../../public/mutefire_transcribe.json";
 import rttmJson from "../../public/outputMutefire/mutefire_44000.json";
 import rttmJsonToLive from "../../public/outputToLive/tolive_23000.json";
+import rrttmJsonToLiveTrsc from "../../public/tolive_transcribe.json";
 
 const Upload = ({ onFileUpload }) => {
   const { setData } = useContext(DataContext);
@@ -59,13 +61,40 @@ const Upload = ({ onFileUpload }) => {
     }
     setUploading(false);
   };
+  const selectSrt = (file) => {
+    switch (file) {
+      case "mutefire":
+        return "Mute_Fire_Sub_EN.srt";
+      case "tolive":
+        return "To_Live.srt";
+      case "mutefire_trsc":
+        return "Mute_Fire_Sub_EN.srt";
+      case "tolive_trsc":
+        return "To_Live.srt";
+      default:
+        return "Mute_Fire_Sub_EN.srt";
+    }
+  };
+  const selectRttm = (file) => {
+    switch (file) {
+      case "mutefire":
+        return rttmJson;
+      case "tolive":
+        return rttmJsonToLive;
+      case "mutefire_trsc":
+        return rrttmJsonMuteFireTrsc;
+      case "tolive_trsc":
+        return rrttmJsonToLiveTrsc;
+      default:
+        return rttmJson;
+    }
+  };
   const handleSetSrt = async (file) => {
     setUploading(true);
     try {
       // console.log(selectedFile);
-      const file_name =
-        file === "mutefire" ? "Mute_Fire_Sub_EN.srt" : "To_Live.srt";
-      const rttmJsonSelected = file === "mutefire" ? rttmJson : rttmJsonToLive;
+      const file_name = selectSrt(file);
+      const rttmJsonSelected = selectRttm(file);
 
       console.log(" empieza el post srtToJson mutefire");
 
@@ -104,13 +133,25 @@ const Upload = ({ onFileUpload }) => {
             className="hover:shadow-form w-middle rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none"
             onClick={() => handleSetSrt("mutefire")}
           >
-            Simula la carga del .srt MuteFire
+            MuteFire x Pyannote
           </button>
           <button
             className="hover:shadow-form w-middle rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none ml-6"
             onClick={() => handleSetSrt("tolive")}
           >
-            Simula la carga del .srt To Live
+            To Live x Pyannote
+          </button>
+          <button
+            className="hover:shadow-form w-middle rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none"
+            onClick={() => handleSetSrt("mutefire_trsc")}
+          >
+            MuteFire x Trancribe
+          </button>
+          <button
+            className="hover:shadow-form w-middle rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none ml-6 mt-6"
+            onClick={() => handleSetSrt("tolive_trsc")}
+          >
+            To Live x Trancribe
           </button>
           <div className="mb-6 pt-4">
             <label className="mb-5 block text-xl font-semibold text-[#fff]">

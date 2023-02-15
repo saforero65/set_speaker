@@ -90,6 +90,7 @@ const handler = (req, res) => {
     const rttm = req.body.rttm;
 
     const [rttmWithSpeakers, segmentosIgnorados] = joinSRTtoRTTM(srt, rttm);
+    console.log(segmentosIgnorados.length);
     const containerSegmentsUndefined = compareAssignSpeaker(segmentosIgnorados);
     const rttmJson = joinSegmentsRTTM(
       containerSegmentsUndefined,
