@@ -16,6 +16,7 @@ const joinRTTM_SRT = (srt, rttm) => {
 };
 
 const compareAssignSpeaker = (json) => {
+  // let contador = 0;
   json.forEach((item, index) => {
     if (item.speaker === "undefined") {
       //ver el objeto anterior y el siguiente y asignar si son iguales
@@ -42,8 +43,10 @@ const compareAssignSpeaker = (json) => {
       } else {
         item.speaker = json[index - 1].speaker;
       }
+      // contador++;
     }
   });
+  // console.log(contador);
   return json;
 };
 
