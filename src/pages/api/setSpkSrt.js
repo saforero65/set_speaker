@@ -2,8 +2,8 @@ const joinRTTM_SRT = (srt, rttm) => {
   let holgura = 1;
 
   rttm.segmentos.forEach((item) => {
-    let start = item.start;
-    let end = item.stop;
+    let start = parseFloat(itemRTTM.start);
+    let end = parseFloat(itemRTTM.stop);
     let speaker = item.speaker;
     srt.forEach((sub) => {
       if (start - holgura <= sub.startTime && end + holgura >= sub.endTime) {
