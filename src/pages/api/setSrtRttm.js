@@ -9,15 +9,19 @@ const joinSRTtoRTTM = (srt, rttm) => {
     let segmentoAceptado = false;
 
     rttm.segmentos.forEach((itemRTTM) => {
-      let start = parseFloat(itemRTTM.start);
-      let end = parseFloat(itemRTTM.stop);
+      let start = itemRTTM.start;
+      let end = itemRTTM.stop;
       let speaker = itemRTTM.speaker;
+      if (typeof start === "string") {
+        start = parseFloat(start);
+      }
+      if (typeof end === "string") {
+        end = parseFloat(end);
+      }
 
       //si el srt esta entre el tiempo incial y final del rttm asignar segmento con holgura de 1 segundo
 
       if (start - holgura <= startSRT && end + holgura >= endSRT) {
-        console.log("entrando");
-        console.log(index);
         if (!itemRTTM.segmentosSRT) {
           itemRTTM.segmentosSRT = [];
         }
