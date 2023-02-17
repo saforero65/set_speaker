@@ -10,7 +10,26 @@ const Segments = () => {
       converToArray(JSON.parse(data).total_segmentos_por_speaker);
     }
   }, [data]);
+  const secondsToSubrip = (seconds) => {
+    var hour = Math.floor(seconds / 3600);
+    var minute = Math.floor((seconds % 3600) / 60);
+    var second = Math.floor(seconds % 60);
+    var millisecond = Math.floor((seconds % 1) * 1000);
 
+    return (
+      (hour > 9 ? hour : "0" + hour) +
+      ":" +
+      (minute > 9 ? minute : "0" + minute) +
+      ":" +
+      (second > 9 ? second : "0" + second) +
+      "," +
+      (millisecond > 99
+        ? millisecond
+        : millisecond > 9
+        ? "0" + millisecond
+        : "00" + millisecond)
+    );
+  };
   const converToArray = (obj) => {
     let arr = [];
     for (let key in obj) {
@@ -23,16 +42,16 @@ const Segments = () => {
   const Segment = ({ segment }) => (
     <div className="segmentos">
       <div className="segmentos_details">
-        <p>Start: {segment.start}</p>
-        <p>Stop: {segment.stop}</p>
+        <p>Start: {secondsToSubrip(segment.start)}</p>
+        <p>Stop: {secondsToSubrip(segment.stop)}</p>
         <p className="speaker">Speaker: {segment.speaker}</p>
       </div>
       <div className="containerSegments">
         {segment?.segmentosSRT?.map((srt) => (
           <div className="segmentosSRT" key={srt.id}>
             <p className="speaker">ID: {srt.id}</p>
-            <p>Start Time: {srt.startTime}</p>
-            <p>End Time: {srt.endTime}</p>
+            <p>Start Time: {secondsToSubrip(srt.startTime)}</p>
+            <p>End Time: {secondsToSubrip(srt.endTime)}</p>
             <p>Text: {srt.text}</p>
             {/* <p className="speaker">Speaker: {srt.speaker}</p> */}
           </div>
