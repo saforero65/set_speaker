@@ -1,5 +1,5 @@
 const joinSRTtoRTTM = (srt, rttm) => {
-  let holgura = 1.5;
+  let holgura = 1;
   const segmentosIgnorados = [];
 
   //itera sobre los segmentos del rttm
@@ -56,19 +56,30 @@ const compareAssignSpeaker = (json) => {
     }
   });
   let containerSegments = [];
+  let endTime = 0;
   for (const speaker in segmentos) {
     const speakerSegment = new Set();
-    const startTime = Array.from(segmentos[speaker])[0].startTime;
-    const endTime = Array.from(segmentos[speaker])[
-      Array.from(segmentos[speaker]).length - 1
-    ].endTime;
-    const speakerLabel = speaker;
+    let startTime = Array.from(segmentos[speaker])[0].startTime;
+
+    let speakerLabel = speaker;
     Array.from(segmentos[speaker]).forEach((element, index) => {
       if (index < Array.from(segmentos[speaker]).length - 1) {
         //si los id estan en secuencia guardar en un arreglo
         if (element.id == Array.from(segmentos[speaker])[index + 1].id - 1) {
           speakerSegment.add(element);
           speakerSegment.add(Array.from(segmentos[speaker])[index + 1]);
+        } else {
+          //crear un nuevo objeto y guardar el segmento
+          const obj = {
+            speaker: speakerLabel,
+            start: startTime,
+            stop: element.endTime,
+            segmentosSRT: Array.from(speakerSegment),
+          };
+          containerSegments.push(obj);
+          speakerSegment.clear();
+          startTime = Array.from(segmentos[speaker])[index + 1].startTime;
+          endTime = Array.from(segmentos[speaker])[index + 1].endTime;
         }
       }
     });

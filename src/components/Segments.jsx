@@ -6,7 +6,8 @@ const Segments = () => {
   const [segments, setSegments] = useState(null);
   useEffect(() => {
     if (data) {
-      setSegments(JSON.parse(data));
+      setSegments(JSON.parse(data).segmentos.sort((a, b) => a.start - b.start));
+
       converToArray(JSON.parse(data).total_segmentos_por_speaker);
     }
   }, [data]);
@@ -30,6 +31,7 @@ const Segments = () => {
         : "00" + millisecond)
     );
   };
+
   const converToArray = (obj) => {
     let arr = [];
     for (let key in obj) {
@@ -64,21 +66,26 @@ const Segments = () => {
     <div className="visualizaction">
       <h1> Visualizacion Segmentos con Fragmentos </h1>
       <h3 className="speaker details">
-        Total de Segementos: {segments?.segmentos?.length}
+        Total de Segementos: {JSON.parse(data)?.segmentos?.length}
       </h3>
       <h3 className="speaker details">
-        Total de Speakers: {segments?.total_speakers}
+        Total de Speakers: {JSON.parse(data)?.total_speakers}
       </h3>
       <h3 className="speaker details">Total de Segmentos por Speakers:</h3>
-      {converToArray(segments?.total_segmentos_por_speaker).map((item) => (
-        <h3 className="speaker_details" key={item}>
-          {item}
-        </h3>
-      ))}
+      {converToArray(JSON.parse(data)?.total_segmentos_por_speaker).map(
+        (item) => (
+          <h3 className="speaker_details" key={item}>
+            {item}
+          </h3>
+        )
+      )}
 
-      {segments?.segmentos?.map((segment) => (
-        <Segment key={segment.start} segment={segment} />
-      ))}
+      {segments?.map((segment) =>
+        //si segmentosSRT es mayor a 0, entonces se muestra el segmento
+        segment.segmentosSRT?.length > 0 ? (
+          <Segment segment={segment} key={segment.start} />
+        ) : null
+      )}
     </div>
   );
 };
