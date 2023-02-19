@@ -9,9 +9,7 @@ const Segments = () => {
       setSegments(
         JSON.parse(data).segmentos?.sort((a, b) => a.start - b.start)
       );
-      console.log(
-        JSON.parse(data).segmentos?.sort((a, b) => a.start - b.start)
-      );
+      console.log(JSON.parse(data));
     }
   }, [data]);
   const secondsToSubrip = (seconds) => {
@@ -73,7 +71,21 @@ const Segments = () => {
     <div className="visualizaction">
       <h1> Visualizacion Segmentos con Fragmentos </h1>
       <h3 className="speaker details">
-        Total de Segementos: {JSON.parse(data)?.segmentos?.length}
+        Total de Segementos: {JSON.parse(data)?.total_segmentos}
+      </h3>
+      <h3 className="speaker details">
+        Total de Segementos Vacios: {JSON.parse(data)?.total_segmentos_vacios}
+      </h3>
+      <h3 className="speaker details">
+        Total de Segementos Ignorados: {JSON.parse(data)?.totalSegmentsIgnored}
+      </h3>
+      <h3 className="speaker details">
+        IDs Segmentos Ignorados:{" "}
+        {JSON.parse(data)?.segmentsSrtIgnored.map((item) => (
+          <p style={{ display: "inline" }} key={item}>
+            {item + ", "}
+          </p>
+        ))}
       </h3>
       <h3 className="speaker details">
         Total de Speakers: {JSON.parse(data)?.total_speakers}

@@ -122,6 +122,26 @@ const joinSegmentsRTTM = (containerSegments, rttm) => {
   rttm.segmentos.push(...containerSegments);
   return rttm;
 };
+const verifiedIgnoredSegments = (srt, rttm) => {
+  let segmentsSrt = [];
+  rttm.segmentos.forEach((element) => {
+    if (element.segmentosSRT) {
+      Array.from(element.segmentosSRT).forEach((item) => {
+        segmentsSrt.push(parseInt(item.id));
+      });
+    }
+  });
+  //hacer un arreglo de uno hasta el ultimo id del srt
+  let arraySrt = Array.from({ length: srt.length }, (_, i) => i + 1);
+  console.log(arraySrt);
+  console.log(segmentsSrt);
+  //obtener los numeros que no estan en el arreglo de los segmentos
+  let noEstanEnSegmentos = arraySrt.filter((x) => !segmentsSrt.includes(x));
+  let noEstanEnSrt = segmentsSrt.filter((x) => !arraySrt.includes(x));
+  let segmentsSrtIgnored = noEstanEnSegmentos.concat(noEstanEnSrt);
+
+  return segmentsSrtIgnored;
+};
 
 const handler = (req, res) => {
   try {
@@ -136,10 +156,17 @@ const handler = (req, res) => {
       rttmWithSpeakers
     );
 
+    const segmentsSrtIgnored = verifiedIgnoredSegments(srt, rttmJson);
+
     const rttmJsonWithEmptySegments = generateEmptySegmentsArray(
       rttmJson.segmentos.sort((a, b) => a.start - b.start)
     );
+    const total_segmentos = rttmJson.segmentos.length;
     const joinAll = joinSegmentsRTTM(rttmJsonWithEmptySegments, rttmJson);
+    joinAll.total_segmentos = total_segmentos;
+    joinAll.total_segmentos_vacios = rttmJsonWithEmptySegments.length;
+    joinAll.segmentsSrtIgnored = segmentsSrtIgnored;
+    joinAll.totalSegmentsIgnored = segmentsSrtIgnored.length;
 
     res.status(200).json({
       message: "todo bien",
