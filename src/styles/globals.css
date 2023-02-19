@@ -45,6 +45,20 @@
     max-width: 100%;
 }
 
+.segmentosEmpty {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid black;
+    padding: 10px;
+    margin: 10px;
+    width: fit-content;
+    border-radius: 10px;
+    background-color: rgb(255, 145, 0);
+    max-width: 100%;
+}
+
 h1 {
     display: block;
     width: 100%;

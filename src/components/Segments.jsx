@@ -6,9 +6,12 @@ const Segments = () => {
   const [segments, setSegments] = useState(null);
   useEffect(() => {
     if (data) {
-      setSegments(JSON.parse(data).segmentos.sort((a, b) => a.start - b.start));
-
-      converToArray(JSON.parse(data).total_segmentos_por_speaker);
+      setSegments(
+        JSON.parse(data).segmentos?.sort((a, b) => a.start - b.start)
+      );
+      console.log(
+        JSON.parse(data).segmentos?.sort((a, b) => a.start - b.start)
+      );
     }
   }, [data]);
   const secondsToSubrip = (seconds) => {
@@ -37,15 +40,19 @@ const Segments = () => {
     for (let key in obj) {
       arr.push(`${key}: ${obj[key]}`);
     }
-    console.log(arr);
+
     return arr;
   };
-
   const Segment = ({ segment }) => (
-    <div className="segmentos">
+    <div
+      className={segment.speaker === "empty" ? "segmentosEmpty" : "segmentos"}
+    >
       <div className="segmentos_details">
         <p>Start: {secondsToSubrip(segment.start)}</p>
         <p>Stop: {secondsToSubrip(segment.stop)}</p>
+        {segment.speaker === "empty" ? (
+          <p>Duration: {segment.duration}</p>
+        ) : null}
         <p className="speaker">Speaker: {segment.speaker}</p>
       </div>
       <div className="containerSegments">
@@ -82,7 +89,7 @@ const Segments = () => {
 
       {segments?.map((segment) =>
         //si segmentosSRT es mayor a 0, entonces se muestra el segmento
-        segment.segmentosSRT?.length > 0 ? (
+        segment || segment.speaker == "empty" ? (
           <Segment segment={segment} key={segment.start} />
         ) : null
       )}

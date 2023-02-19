@@ -1,5 +1,5 @@
 const joinSRTtoRTTM = (srt, rttm) => {
-  let holgura = 1;
+  let holgura = 1.5;
   const segmentosIgnorados = [];
 
   //itera sobre los segmentos del rttm
@@ -68,6 +68,7 @@ const compareAssignSpeaker = (json) => {
         if (element.id == Array.from(segmentos[speaker])[index + 1].id - 1) {
           speakerSegment.add(element);
           speakerSegment.add(Array.from(segmentos[speaker])[index + 1]);
+          endTime = Array.from(segmentos[speaker])[index + 1].endTime;
         } else {
           //crear un nuevo objeto y guardar el segmento
           const obj = {
@@ -79,10 +80,10 @@ const compareAssignSpeaker = (json) => {
           containerSegments.push(obj);
           speakerSegment.clear();
           startTime = Array.from(segmentos[speaker])[index + 1].startTime;
-          endTime = Array.from(segmentos[speaker])[index + 1].endTime;
         }
       }
     });
+    console.log(endTime);
     const obj = {
       speaker: speakerLabel,
       start: startTime,
@@ -94,7 +95,27 @@ const compareAssignSpeaker = (json) => {
   }
   return containerSegments;
 };
+const generateEmptySegmentsArray = (originalArray) => {
+  const newArray = [];
+  for (let i = 0; i < originalArray.length - 1; i++) {
+    //si el tiempo entre el segmento y el siguiente es mayor a 1 segundo
+    if (originalArray[i + 1].start - originalArray[i].stop > 1) {
+      const emptySegment = {
+        start: originalArray[i].stop,
+        stop: originalArray[i + 1].start,
+        duration: originalArray[i + 1].start - originalArray[i].stop,
+        speaker: "empty",
+      };
+      newArray.push(emptySegment);
 
+      // console.log(emptySegment.start);
+    }
+  }
+
+  newArray.push(originalArray[originalArray.length - 1]);
+
+  return newArray;
+};
 const joinSegmentsRTTM = (containerSegments, rttm) => {
   //unir los segmentos con el rttm
 
@@ -115,9 +136,14 @@ const handler = (req, res) => {
       rttmWithSpeakers
     );
 
+    const rttmJsonWithEmptySegments = generateEmptySegmentsArray(
+      rttmJson.segmentos.sort((a, b) => a.start - b.start)
+    );
+    const joinAll = joinSegmentsRTTM(rttmJsonWithEmptySegments, rttmJson);
+
     res.status(200).json({
       message: "todo bien",
-      jsonRttm: rttmJson,
+      jsonRttm: joinAll,
     });
   } catch (error) {
     res.status(500).json({
