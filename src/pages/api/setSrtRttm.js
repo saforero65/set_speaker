@@ -107,12 +107,8 @@ const generateEmptySegmentsArray = (originalArray) => {
         speaker: "empty",
       };
       newArray.push(emptySegment);
-
-      // console.log(emptySegment.start);
     }
   }
-
-  newArray.push(originalArray[originalArray.length - 1]);
 
   return newArray;
 };
@@ -133,8 +129,7 @@ const verifiedIgnoredSegments = (srt, rttm) => {
   });
   //hacer un arreglo de uno hasta el ultimo id del srt
   let arraySrt = Array.from({ length: srt.length }, (_, i) => i + 1);
-  console.log(arraySrt);
-  console.log(segmentsSrt);
+
   //obtener los numeros que no estan en el arreglo de los segmentos
   let noEstanEnSegmentos = arraySrt.filter((x) => !segmentsSrt.includes(x));
   let noEstanEnSrt = segmentsSrt.filter((x) => !arraySrt.includes(x));
