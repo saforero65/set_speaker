@@ -46,10 +46,13 @@ const Segments = () => {
       className={segment.speaker === "empty" ? "segmentosEmpty" : "segmentos"}
     >
       <div className="segmentos_details">
-        <p>Start: {secondsToSubrip(segment.start)}</p>
-        <p>Stop: {secondsToSubrip(segment.stop)}</p>
         {segment.speaker === "empty" ? (
-          <p>Duration: {segment.duration}</p>
+          <p className="speaker">Segment Descriptor </p>
+        ) : null}
+        <p>Start: {secondsToSubrip(segment.start)}</p>
+        <p>End: {secondsToSubrip(segment.stop)}</p>
+        {segment.speaker === "empty" ? (
+          <p>Duration: {segment.duration.toFixed(3)} seg</p>
         ) : null}
         <p className="speaker">Speaker: {segment.speaker}</p>
       </div>
@@ -71,16 +74,17 @@ const Segments = () => {
     <div className="visualizaction">
       <h1> Visualizacion Segmentos con Fragmentos </h1>
       <h3 className="speaker details">
-        Total de Segementos: {JSON.parse(data)?.total_segmentos}
+        Total Segments: {JSON.parse(data)?.total_segmentos}
       </h3>
       <h3 className="speaker details">
-        Total de Segementos Vacios: {JSON.parse(data)?.total_segmentos_vacios}
+        Total segments for description (greater than 1 second):{" "}
+        {JSON.parse(data)?.total_segmentos_vacios}
       </h3>
       <h3 className="speaker details">
-        Total de Segementos Ignorados: {JSON.parse(data)?.totalSegmentsIgnored}
+        Total Ignored Subtitles: {JSON.parse(data)?.totalSegmentsIgnored}
       </h3>
       <h3 className="speaker details">
-        IDs Segmentos Ignorados:{" "}
+        IDs Ignored Subtitles:{" "}
         {JSON.parse(data)?.segmentsSrtIgnored.map((item) => (
           <p style={{ display: "inline" }} key={item}>
             {item + ", "}
@@ -88,9 +92,9 @@ const Segments = () => {
         ))}
       </h3>
       <h3 className="speaker details">
-        Total de Speakers: {JSON.parse(data)?.total_speakers}
+        Total Speakers: {JSON.parse(data)?.total_speakers}
       </h3>
-      <h3 className="speaker details">Total de Segmentos por Speakers:</h3>
+      <h3 className="speaker details">Total Segments per Speaker:</h3>
       {converToArray(JSON.parse(data)?.total_segmentos_por_speaker).map(
         (item) => (
           <h3 className="speaker_details" key={item}>
