@@ -99,7 +99,7 @@ const generateEmptySegmentsArray = (originalArray) => {
   const newArray = [];
   for (let i = 0; i < originalArray.length - 1; i++) {
     //si el tiempo entre el segmento y el siguiente es mayor a 1 segundo
-    if (originalArray[i + 1].start - originalArray[i].stop > 1) {
+    if (originalArray[i + 1].start - originalArray[i].stop > 2) {
       const emptySegment = {
         start: originalArray[i].stop,
         stop: originalArray[i + 1].start,
