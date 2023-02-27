@@ -1,6 +1,8 @@
 import { DataContext } from "@/context/DataContext";
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
+import rttmJsonAlma from "../../public/alma.json";
+import rrttmJsonAlmaTrsc from "../../public/alma_transcribe.json";
 import rrttmJsonMuteFireTrsc from "../../public/mutefire_transcribe.json";
 import rttmJson from "../../public/outputMutefire/mutefire_44000.json";
 import rttmJsonToLive from "../../public/outputToLive/tolive_23000.json";
@@ -71,6 +73,10 @@ const Upload = ({ onFileUpload }) => {
         return "Mute_Fire_Sub_EN.srt";
       case "tolive_trsc":
         return "To_Live.srt";
+      case "alma_trsc":
+        return "Alma.srt";
+      case "alma":
+        return "Alma.srt";
       default:
         return "Mute_Fire_Sub_EN.srt";
     }
@@ -85,6 +91,11 @@ const Upload = ({ onFileUpload }) => {
         return rrttmJsonMuteFireTrsc;
       case "tolive_trsc":
         return rrttmJsonToLiveTrsc;
+      case "alma_trsc":
+        return rrttmJsonAlmaTrsc;
+      case "alma":
+        return rttmJsonAlma;
+
       default:
         return rttmJson;
     }
@@ -96,12 +107,12 @@ const Upload = ({ onFileUpload }) => {
       const file_name = selectSrt(file);
       const rttmJsonSelected = selectRttm(file);
 
-      console.log(" empieza el post srtToJson mutefire");
+      console.log(" empieza el post srtToJson ");
 
       const jsonSrt = await axios.post("/api/srtToJson", {
         filename: file_name,
       });
-      console.log("termina el post srtToJson mutefire");
+      console.log("termina el post srtToJson ");
 
       console.log(" empieza el post setSpkSrt");
       //leer json de public y mandarlo a setSpkSrt
@@ -129,30 +140,48 @@ const Upload = ({ onFileUpload }) => {
     <div className="flex items-center justify-center p-12">
       <div className="mx-auto w-full max-w-[700px] bg-white">
         <div className="py-6 px-9 bg-slate-900 rounded-lg">
-          <button
-            className="hover:shadow-form w-middle rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none"
-            onClick={() => handleSetSrt("mutefire")}
-          >
-            MuteFire x Pyannote
-          </button>
-          <button
-            className="hover:shadow-form w-middle rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none ml-6"
-            onClick={() => handleSetSrt("tolive")}
-          >
-            To Live x Pyannote
-          </button>
-          <button
-            className="hover:shadow-form w-middle rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none"
-            onClick={() => handleSetSrt("mutefire_trsc")}
-          >
-            MuteFire x Trancribe
-          </button>
-          <button
-            className="hover:shadow-form w-middle rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none ml-6 mt-6"
-            onClick={() => handleSetSrt("tolive_trsc")}
-          >
-            To Live x Trancribe
-          </button>
+          <div className="flex ">
+            {" "}
+            <button
+              className="hover:shadow-form w-middle rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none "
+              onClick={() => handleSetSrt("mutefire")}
+            >
+              MuteFire x Pyannote
+            </button>
+            <button
+              className="hover:shadow-form w-middle rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none ml-6"
+              onClick={() => handleSetSrt("tolive")}
+            >
+              To Live x Pyannote
+            </button>
+            <button
+              className="hover:shadow-form w-middle rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none ml-6"
+              onClick={() => handleSetSrt("alma")}
+            >
+              Alma x Pyannote
+            </button>
+          </div>
+          <div className="flex ">
+            <button
+              className="hover:shadow-form w-middle rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none  mt-6"
+              onClick={() => handleSetSrt("mutefire_trsc")}
+            >
+              MuteFire x Trancribe
+            </button>
+            <button
+              className="hover:shadow-form w-middle rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none ml-6 mt-6"
+              onClick={() => handleSetSrt("tolive_trsc")}
+            >
+              To Live x Trancribe
+            </button>
+            <button
+              className="hover:shadow-form w-middle rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none ml-6 mt-6"
+              onClick={() => handleSetSrt("alma_trsc")}
+            >
+              Alma x Trancribe
+            </button>
+          </div>
+
           <div className="mb-6 pt-4">
             <label className="mb-5 block text-xl font-semibold text-[#fff]">
               Upload .srt

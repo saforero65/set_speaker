@@ -1,3 +1,4 @@
+import fs from "fs";
 const joinSRTtoRTTM = (srt, rttm) => {
   let holgura = 1.5;
   const segmentosIgnorados = [];
@@ -97,6 +98,14 @@ const compareAssignSpeaker = (json) => {
 };
 const generateEmptySegmentsArray = (originalArray) => {
   const newArray = [];
+  //primer elemento del arreglo es el tiempo inicial 0 y el primero elmento el tiempo inicial
+  newArray.push({
+    start: 0,
+    stop: originalArray[0].start,
+    duration: originalArray[0].start - 0.001,
+    speaker: "empty",
+  });
+  //iterar sobre el arreglo original
   for (let i = 0; i < originalArray.length - 1; i++) {
     //si el tiempo entre el segmento y el siguiente es mayor a 1 segundo
     if (originalArray[i + 1].start - originalArray[i].stop > 2) {
@@ -162,6 +171,11 @@ const handler = (req, res) => {
     joinAll.total_segmentos_vacios = rttmJsonWithEmptySegments.length;
     joinAll.segmentsSrtIgnored = segmentsSrtIgnored;
     joinAll.totalSegmentsIgnored = segmentsSrtIgnored.length;
+
+    fs.writeFileSync(
+      "rttmJsonWithEmptySegments.json",
+      JSON.stringify(rttmJsonWithEmptySegments, null, 2)
+    );
 
     res.status(200).json({
       message: "todo bien",

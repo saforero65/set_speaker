@@ -77,7 +77,7 @@ const Segments = () => {
         Total Segments: {JSON.parse(data)?.total_segmentos}
       </h3>
       <h3 className="speaker details">
-        Total segments for description (greater than 1 second):{" "}
+        Total segments for description (greater than 2 second):{" "}
         {JSON.parse(data)?.total_segmentos_vacios}
       </h3>
       <h3 className="speaker details">
