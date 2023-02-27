@@ -1,4 +1,3 @@
-import fs from "fs";
 const joinSRTtoRTTM = (srt, rttm) => {
   let holgura = 1.5;
   const segmentosIgnorados = [];
@@ -172,10 +171,10 @@ const handler = (req, res) => {
     joinAll.segmentsSrtIgnored = segmentsSrtIgnored;
     joinAll.totalSegmentsIgnored = segmentsSrtIgnored.length;
 
-    fs.writeFileSync(
-      "rttmJsonWithEmptySegments.json",
-      JSON.stringify(rttmJsonWithEmptySegments, null, 2)
-    );
+    // fs.writeFileSync(
+    //   "rttmJsonWithEmptySegments.json",
+    //   JSON.stringify(rttmJsonWithEmptySegments, null, 2)
+    // );
 
     res.status(200).json({
       message: "todo bien",
